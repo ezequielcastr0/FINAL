@@ -1,74 +1,321 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import React, { useState } from 'react';
+import { StyleSheet, View, Button, Text, TextInput } from 'react-native';
+import Slider from '@react-native-community/slider';
 
 export default function HomeScreen() {
+  const [greeting, setGreeting] = useState('Diario de Metas Semanales');
+  const [estadoTarea, setEstadoTarea] = useState('Incompleto');
+
+  const [lunes, setLunes] = useState('');
+  const [martes, setMartes] = useState('');
+  const [miercoles, setMiercoles] = useState('');
+  const [jueves, setJueves] = useState('');
+  const [viernes, setViernes] = useState('');
+  const [sabado, setSabado] = useState('');
+  const [domingo, setDomingo] = useState('');
+
+  const [fontSize, setFontSize] = useState(24);
+  const [bgColor, setBgColor] = useState('#fff');
+
+  const [estadoLunes, setEstadoLunes] = useState('Incompleto');
+  const [estadoMartes, setEstadoMartes] = useState('Incompleto');
+  const [estadoMiercoles, setEstadoMiercoles] = useState('Incompleto');
+const [estadoJueves, setEstadoJueves] = useState('Incompleto');
+const [estadoViernes, setEstadoViernes] = useState('Incompleto');
+const [estadoSabado, setEstadoSabado] = useState('Incompleto');
+const [estadoDomingo, setEstadodomingo] = useState('Incompleto');
+
+const [language, setLanguage] = useState('es');
+const getTranslatedText = (key: string) => {
+  const translations = {
+  
+  es: {
+  greeting: `Diario de Metas Semanales`,
+  textSize: 'Tamaño del Texto',
+  language: 'Idioma',
+  spanish: 'Español',
+  english: 'Inglés',
+  lunes:'LUNES',
+  martes:'MARTES',
+  miercoles:'MIERCOLES',
+  jueves:'JUEVES',
+  viernes:'VIERNES',
+  sabado:'SABADO',
+  domingo:'DOMINGO',
+  tarea:'INGRESE LA TAREA',
+  desc:'INGRESE LA DESCRIPCION',
+  },
+  en: {
+  greeting: `Weekly Goals Diary`,
+  textSize: 'Text Size',
+  language: 'Language',
+  spanish: 'Spanish',
+  english: 'English',
+  lunes:'MONDAY',
+  martes:'TUESDAY',
+  miercoles:'WEDNESDAY',
+  jueves:'THURSDAY',
+  viernes:'FRIDAY',
+  sabado:'SATURDAY',
+  domingo:'SUNDAY',
+  tarea:'TASK',
+  desc:'DESCRPTION',
+
+  },
+  };
+  return translations[language][key];
+
+};
+
+
+
+
+  const toggleEstado = () => {
+    setEstadoTarea(estadoTarea === 'Incompleto' ? 'Completo' : 'Incompleto');
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={[styles.container, { backgroundColor: bgColor }]}>
+      <Text style={[styles.greetingText, { fontSize }]}>{getTranslatedText('greeting')}</Text>
+   
+      <Text>Tamaño del Texto</Text>
+
+      <Text>{getTranslatedText('language')}</Text>
+      <Button title={getTranslatedText('spanish')} onPress={() => setLanguage('es')} />
+      <Button title={getTranslatedText('english')} onPress={() => setLanguage('en')} />
+
+
+      <Slider
+        style={styles.slider}
+        minimumValue={10}
+        maximumValue={30}
+        step={1}
+        value={fontSize}
+        onValueChange={(value) => setFontSize(value)}
+      />
+
+      <View style={styles.gridContainer}>
+        {/* LUNES */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('lunes')} 
+            onPress={() => {
+              setBgColor('yellow');  
+            }}
+          />
+          
+          <Button 
+  title={estadoLunes}
+  onPress={() => setEstadoLunes(estadoLunes === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        </View>
+
+        {/* MARTES */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('martes')} 
+            onPress={() => {
+              setBgColor('green');
+            }}
+          />
+         
+          <Button 
+  title={estadoMartes}
+  onPress={() => setEstadoMartes(estadoMartes === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+<TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        </View>
+
+        {/* MIÉRCOLES */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('miercoles')} 
+            onPress={() => {
+              setBgColor('blue');
+              
+            }}
+          />
+        
+          <Button 
+  title={estadoMiercoles}
+  onPress={() => setEstadoMiercoles(estadoMiercoles === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+<TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        </View>
+
+        {/* JUEVES */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('jueves')} 
+            onPress={() => {
+              setBgColor('orange');
+              
+            }}
+          />
+         
+          <Button 
+  title={estadoJueves}
+  onPress={() => setEstadoJueves(estadoJueves === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+<TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        </View>
+
+        {/* VIERNES */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('viernes')} 
+            onPress={() => {
+              setBgColor('purple');
+             
+            }}
+          />
+         
+          <Button 
+  title={estadoViernes}
+  onPress={() => setEstadoViernes(estadoViernes === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+          
+<TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        </View>
+
+        {/* SÁBADO */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('sabado')} 
+            onPress={() => {
+              setBgColor('white');
+             
+            }}
+          />
+        
+          <Button 
+  title={estadoSabado}
+  onPress={() => setEstadoSabado(estadoSabado === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+<TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        </View>
+
+        {/* DOMINGO */}
+        <View style={styles.dayBox}>
+          <Button
+            title={getTranslatedText('domingo')} 
+            onPress={() => {
+              setBgColor('red');
+             
+            }}
+          />
+           <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('tarea')}
+            onChangeText={(text) => setLunes(text)}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={getTranslatedText('desc')}
+            onChangeText={(text) => setLunes(text)}
+          />
+        
+          
+          <Button 
+  title={estadoDomingo}
+  onPress={() => setEstadodomingo(estadoDomingo === 'Incompleto' ? 'Completo' : 'Incompleto')}
+/>
+        </View>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  greetingText: {
+    fontSize: 20,
+    marginBottom: 10,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    width: '90%',
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
-});
+  slider: {
+    width: 300,
+    height: 40,
+    marginVertical: 20,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    width: '100%',
+  },
+  dayBox: {
+    width: '30%',
+    backgroundColor: '#f2f2f2',
+    margin: 10,
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+}); 
